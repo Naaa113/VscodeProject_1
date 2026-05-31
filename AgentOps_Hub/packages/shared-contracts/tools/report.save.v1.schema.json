@@ -1,0 +1,77 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://agentops-hub.local/contracts/tools/report.save.v1.schema.json",
+  "title": "report.save.v1",
+  "type": "object",
+  "x_tool": {
+    "name": "report.save.v1",
+    "version": "v1",
+    "host": "java-task-entrypoint",
+    "permission": "report:write",
+    "requires_approval": false,
+    "idempotency": "Required. Retries must reuse idempotency_key.",
+    "timeout_ms": 5000,
+    "retry": {"max_attempts": 2, "backoff_ms": 300},
+    "audit_fields": ["tenant_id", "requested_by", "trace_id", "idempotency_key"]
+  },
+  "additionalProperties": false,
+  "required": ["request", "response"],
+  "properties": {
+    "request": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["tool_name", "tool_version", "tenant_id", "requested_by", "trace_id", "idempotency_key", "input"],
+      "properties": {
+        "tool_name": {"type": "string", "const": "report.save.v1"},
+        "tool_version": {"type": "string", "const": "v1"},
+        "tenant_id": {"type": "string"},
+        "requested_by": {"type": "string"},
+        "trace_id": {"type": "string"},
+        "idempotency_key": {"type": "string"},
+        "input": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["task_id", "title", "facts", "inferences", "recommendations", "citations"],
+          "properties": {
+            "task_id": {"type": "string"},
+            "title": {"type": "string"},
+            "facts": {"type": "array", "items": {"type": "string"}},
+            "inferences": {"type": "array", "items": {"type": "string"}},
+            "recommendations": {"type": "array", "items": {"type": "string"}},
+            "citations": {
+              "type": "array",
+              "items": {
+                "type": "object",
+                "required": ["document_id", "chunk_id", "source_title"],
+                "properties": {
+                  "document_id": {"type": "string"},
+                  "chunk_id": {"type": "string"},
+                  "source_title": {"type": "string"}
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "response": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["tool_name", "tool_version", "tenant_id", "trace_id", "status"],
+      "properties": {
+        "tool_name": {"type": "string", "const": "report.save.v1"},
+        "tool_version": {"type": "string", "const": "v1"},
+        "tenant_id": {"type": "string"},
+        "trace_id": {"type": "string"},
+        "status": {"type": "string", "enum": ["success", "failed"]},
+        "output": {
+          "type": ["object", "null"],
+          "properties": {
+            "report_id": {"type": "string"}
+          }
+        },
+        "error": {"type": ["object", "null"]}
+      }
+    }
+  }
+}

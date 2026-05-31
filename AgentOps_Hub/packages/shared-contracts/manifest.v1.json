@@ -1,0 +1,32 @@
+{
+  "name": "agentops-shared-contracts",
+  "version": "v1",
+  "phase": "002",
+  "compatibility": {
+    "policy": "Additive changes are compatible. Removing required fields, changing enum semantics, or changing error meanings requires a new version.",
+    "runtime_claim": "Contracts are drafts for future implementation and do not claim services exist."
+  },
+  "openapi": ["openapi/agentops-api.v1.yaml"],
+  "schemas": ["schemas/common.v1.schema.json", "schemas/status.v1.schema.json"],
+  "errors": ["errors/error-codes.v1.json"],
+  "events": [
+    "events/ai.task.created.v1.schema.json",
+    "events/agent.run.started.v1.schema.json",
+    "events/agent.step.completed.v1.schema.json",
+    "events/agent.run.completed.v1.schema.json",
+    "events/agent.run.failed.v1.schema.json",
+    "events/document.uploaded.v1.schema.json",
+    "events/document.indexed.v1.schema.json"
+  ],
+  "tools": [
+    "tools/ticket.search.v1.schema.json",
+    "tools/ticket.create_followup.v1.schema.json",
+    "tools/knowledge.search.v1.schema.json",
+    "tools/report.save.v1.schema.json"
+  ],
+  "examples": {
+    "openapi": "examples/openapi",
+    "events": "examples/events",
+    "tools": "examples/tools"
+  }
+}

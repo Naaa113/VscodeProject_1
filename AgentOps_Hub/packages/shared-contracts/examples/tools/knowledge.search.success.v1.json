@@ -1,0 +1,23 @@
+{
+  "tool_name": "knowledge.search.v1",
+  "tool_version": "v1",
+  "tenant_id": "tenant_demo",
+  "trace_id": "trace_demo",
+  "status": "success",
+  "output": {
+    "items": [
+      {
+        "document_id": "doc_demo",
+        "chunk_id": "chunk_demo",
+        "snippet": "Example cited content.",
+        "score": 0.91,
+        "citation": {
+          "document_id": "doc_demo",
+          "chunk_id": "chunk_demo",
+          "source_title": "Example SOP"
+        }
+      }
+    ]
+  },
+  "error": null
+}

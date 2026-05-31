@@ -1,0 +1,6 @@
+{
+  "error_code": "AUTH_INVALID_CREDENTIALS",
+  "message": "Invalid credentials.",
+  "trace_id": "trace_demo",
+  "retryable": false
+}

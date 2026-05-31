@@ -1,0 +1,51 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://agentops-hub.local/contracts/events/agent.step.completed.v1.schema.json",
+  "title": "agent.step.completed.v1",
+  "type": "object",
+  "x_producer": "agent-service",
+  "x_consumers": ["java-task-entrypoint", "web-console-stream"],
+  "x_compatibility": "Additive payload fields are compatible within v1.",
+  "additionalProperties": false,
+  "required": ["event_id", "event_name", "event_version", "occurred_at", "tenant_id", "trace_id", "producer", "consumers", "payload"],
+  "properties": {
+    "event_id": {"type": "string"},
+    "event_name": {"type": "string", "const": "agent.step.completed.v1"},
+    "event_version": {"type": "string", "const": "v1"},
+    "occurred_at": {"type": "string", "format": "date-time"},
+    "tenant_id": {"type": "string"},
+    "trace_id": {"type": "string"},
+    "producer": {"type": "string", "const": "agent-service"},
+    "consumers": {"type": "array", "items": {"type": "string"}},
+    "payload": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["task_id", "run_id", "step_id", "agent_name", "step_name", "status", "started_at", "finished_at"],
+      "properties": {
+        "task_id": {"type": "string"},
+        "run_id": {"type": "string"},
+        "step_id": {"type": "string"},
+        "agent_name": {"type": "string"},
+        "step_name": {"type": "string"},
+        "status": {"type": "string", "enum": ["success", "failed", "skipped", "waiting_human"]},
+        "summary": {"type": ["string", "null"]},
+        "citations": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "required": ["document_id", "chunk_id", "source_title"],
+            "properties": {
+              "document_id": {"type": "string"},
+              "chunk_id": {"type": "string"},
+              "source_title": {"type": "string"}
+            }
+          }
+        },
+        "error_code": {"type": ["string", "null"]},
+        "retryable": {"type": ["boolean", "null"]},
+        "started_at": {"type": "string", "format": "date-time"},
+        "finished_at": {"type": "string", "format": "date-time"}
+      }
+    }
+  }
+}

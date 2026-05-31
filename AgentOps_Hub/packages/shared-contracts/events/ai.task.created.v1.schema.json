@@ -1,0 +1,35 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://agentops-hub.local/contracts/events/ai.task.created.v1.schema.json",
+  "title": "ai.task.created.v1",
+  "type": "object",
+  "x_producer": "java-task-entrypoint",
+  "x_consumers": ["agent-service"],
+  "x_compatibility": "Additive payload fields are compatible within v1.",
+  "additionalProperties": false,
+  "required": ["event_id", "event_name", "event_version", "occurred_at", "tenant_id", "trace_id", "producer", "consumers", "payload"],
+  "properties": {
+    "event_id": {"type": "string"},
+    "event_name": {"type": "string", "const": "ai.task.created.v1"},
+    "event_version": {"type": "string", "const": "v1"},
+    "occurred_at": {"type": "string", "format": "date-time"},
+    "tenant_id": {"type": "string"},
+    "trace_id": {"type": "string"},
+    "producer": {"type": "string", "const": "java-task-entrypoint"},
+    "consumers": {"type": "array", "items": {"type": "string"}, "contains": {"const": "agent-service"}},
+    "payload": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["task_id", "tenant_id", "created_by", "task_type", "prompt", "priority", "status"],
+      "properties": {
+        "task_id": {"type": "string"},
+        "tenant_id": {"type": "string"},
+        "created_by": {"type": "string"},
+        "task_type": {"type": "string"},
+        "prompt": {"type": "string"},
+        "priority": {"type": "string", "enum": ["low", "normal", "high"]},
+        "status": {"type": "string", "const": "pending"}
+      }
+    }
+  }
+}

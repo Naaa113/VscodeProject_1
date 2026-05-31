@@ -1,0 +1,66 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://agentops-hub.local/contracts/tools/ticket.create_followup.v1.schema.json",
+  "title": "ticket.create_followup.v1",
+  "type": "object",
+  "x_tool": {
+    "name": "ticket.create_followup.v1",
+    "version": "v1",
+    "host": "workflow-service",
+    "permission": "ticket:followup:request",
+    "requires_approval": true,
+    "idempotency": "Required. Retries must reuse idempotency_key.",
+    "timeout_ms": 5000,
+    "retry": {"max_attempts": 1, "backoff_ms": 0},
+    "audit_fields": ["tenant_id", "requested_by", "trace_id", "idempotency_key", "approval_policy"]
+  },
+  "additionalProperties": false,
+  "required": ["request", "response"],
+  "properties": {
+    "request": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["tool_name", "tool_version", "tenant_id", "requested_by", "trace_id", "idempotency_key", "input"],
+      "properties": {
+        "tool_name": {"type": "string", "const": "ticket.create_followup.v1"},
+        "tool_version": {"type": "string", "const": "v1"},
+        "tenant_id": {"type": "string"},
+        "requested_by": {"type": "string"},
+        "trace_id": {"type": "string"},
+        "idempotency_key": {"type": "string"},
+        "input": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["ticket_id", "title", "reason", "approval_policy"],
+          "properties": {
+            "ticket_id": {"type": "string"},
+            "title": {"type": "string"},
+            "reason": {"type": "string"},
+            "due_at": {"type": ["string", "null"], "format": "date-time"},
+            "approval_policy": {"type": "string", "enum": ["required", "policy_check_required"]}
+          }
+        }
+      }
+    },
+    "response": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["tool_name", "tool_version", "tenant_id", "trace_id", "status"],
+      "properties": {
+        "tool_name": {"type": "string", "const": "ticket.create_followup.v1"},
+        "tool_version": {"type": "string", "const": "v1"},
+        "tenant_id": {"type": "string"},
+        "trace_id": {"type": "string"},
+        "status": {"type": "string", "enum": ["waiting_approval", "failed"]},
+        "output": {
+          "type": ["object", "null"],
+          "properties": {
+            "approval_instance_id": {"type": "string"},
+            "action_command_status": {"type": "string", "enum": ["pending"]}
+          }
+        },
+        "error": {"type": ["object", "null"]}
+      }
+    }
+  }
+}

@@ -1,0 +1,30 @@
+{
+  "event_id": "evt_agent_step_completed_demo",
+  "event_name": "agent.step.completed.v1",
+  "event_version": "v1",
+  "occurred_at": "2026-05-31T08:02:00Z",
+  "tenant_id": "tenant_demo",
+  "trace_id": "trace_demo",
+  "producer": "agent-service",
+  "consumers": ["java-task-entrypoint", "web-console-stream"],
+  "payload": {
+    "task_id": "task_demo",
+    "run_id": "run_demo",
+    "step_id": "step_demo",
+    "agent_name": "Retriever",
+    "step_name": "knowledge_lookup",
+    "status": "success",
+    "summary": "Retrieved cited snippets.",
+    "citations": [
+      {
+        "document_id": "doc_demo",
+        "chunk_id": "chunk_demo",
+        "source_title": "Example SOP"
+      }
+    ],
+    "error_code": null,
+    "retryable": null,
+    "started_at": "2026-05-31T08:01:10Z",
+    "finished_at": "2026-05-31T08:02:00Z"
+  }
+}

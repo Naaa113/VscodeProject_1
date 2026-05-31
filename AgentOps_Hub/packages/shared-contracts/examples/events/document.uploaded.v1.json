@@ -1,0 +1,18 @@
+{
+  "event_id": "evt_document_uploaded_demo",
+  "event_name": "document.uploaded.v1",
+  "event_version": "v1",
+  "occurred_at": "2026-05-31T08:00:00Z",
+  "tenant_id": "tenant_demo",
+  "trace_id": "trace_demo",
+  "producer": "document-entrypoint",
+  "consumers": ["rag-service"],
+  "payload": {
+    "document_id": "doc_demo",
+    "knowledge_base_id": "kb_demo",
+    "tenant_id": "tenant_demo",
+    "object_key": "objects/doc_demo",
+    "filename": "example.pdf",
+    "parse_status": "uploaded"
+  }
+}

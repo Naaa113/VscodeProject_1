@@ -1,0 +1,23 @@
+{
+  "version": "v1",
+  "compatibility": "Error codes are stable within v1. New codes may be added without breaking existing consumers.",
+  "error_response_shape": {
+    "required_fields": ["error_code", "message", "trace_id", "retryable"],
+    "optional_fields": ["details"]
+  },
+  "codes": [
+    {"code": "AUTH_INVALID_CREDENTIALS", "http_status": 401, "retryable": false, "owner": "identity-service"},
+    {"code": "AUTH_TOKEN_EXPIRED", "http_status": 401, "retryable": true, "owner": "identity-service"},
+    {"code": "AUTH_FORBIDDEN", "http_status": 403, "retryable": false, "owner": "identity-service"},
+    {"code": "TENANT_REQUIRED", "http_status": 400, "retryable": false, "owner": "api-gateway"},
+    {"code": "VALIDATION_FAILED", "http_status": 400, "retryable": false, "owner": "contract-consumer"},
+    {"code": "RESOURCE_NOT_FOUND", "http_status": 404, "retryable": false, "owner": "resource-owner"},
+    {"code": "CONFLICT", "http_status": 409, "retryable": false, "owner": "resource-owner"},
+    {"code": "RATE_LIMITED", "http_status": 429, "retryable": true, "owner": "api-gateway"},
+    {"code": "AGENT_TASK_FAILED", "http_status": 500, "retryable": true, "owner": "agent-service"},
+    {"code": "AGENT_TOOL_FORBIDDEN", "http_status": 403, "retryable": false, "owner": "workflow-service"},
+    {"code": "APPROVAL_REQUIRED", "http_status": 409, "retryable": false, "owner": "workflow-service"},
+    {"code": "DOCUMENT_PARSE_FAILED", "http_status": 422, "retryable": true, "owner": "rag-service"},
+    {"code": "INTERNAL_ERROR", "http_status": 500, "retryable": true, "owner": "platform"}
+  ]
+}

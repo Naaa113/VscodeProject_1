@@ -1,0 +1,12 @@
+{
+  "tool_name": "ticket.create_followup.v1",
+  "tool_version": "v1",
+  "tenant_id": "tenant_demo",
+  "trace_id": "trace_demo",
+  "status": "waiting_approval",
+  "output": {
+    "approval_instance_id": "approval_demo",
+    "action_command_status": "pending"
+  },
+  "error": null
+}

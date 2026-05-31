@@ -1,0 +1,18 @@
+{
+  "event_id": "evt_agent_run_failed_demo",
+  "event_name": "agent.run.failed.v1",
+  "event_version": "v1",
+  "occurred_at": "2026-05-31T08:10:00Z",
+  "tenant_id": "tenant_demo",
+  "trace_id": "trace_demo",
+  "producer": "agent-service",
+  "consumers": ["java-task-entrypoint", "web-console-stream"],
+  "payload": {
+    "task_id": "task_demo",
+    "run_id": "run_demo",
+    "error_code": "AGENT_TASK_FAILED",
+    "message": "The Agent run failed.",
+    "retryable": true,
+    "failed_at": "2026-05-31T08:10:00Z"
+  }
+}

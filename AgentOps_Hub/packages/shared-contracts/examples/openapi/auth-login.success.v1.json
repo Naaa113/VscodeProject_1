@@ -1,0 +1,6 @@
+{
+  "tenant_id": "tenant_demo",
+  "user_id": "user_demo",
+  "access_token": "example-token-not-a-secret",
+  "expires_at": "2026-05-31T09:00:00Z"
+}

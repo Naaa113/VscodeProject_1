@@ -1,0 +1,32 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://agentops-hub.local/contracts/events/document.indexed.v1.schema.json",
+  "title": "document.indexed.v1",
+  "type": "object",
+  "x_producer": "rag-service",
+  "x_consumers": ["document-entrypoint", "web-console-stream"],
+  "x_compatibility": "Additive payload fields are compatible within v1.",
+  "additionalProperties": false,
+  "required": ["event_id", "event_name", "event_version", "occurred_at", "tenant_id", "trace_id", "producer", "consumers", "payload"],
+  "properties": {
+    "event_id": {"type": "string"},
+    "event_name": {"type": "string", "const": "document.indexed.v1"},
+    "event_version": {"type": "string", "const": "v1"},
+    "occurred_at": {"type": "string", "format": "date-time"},
+    "tenant_id": {"type": "string"},
+    "trace_id": {"type": "string"},
+    "producer": {"type": "string", "const": "rag-service"},
+    "consumers": {"type": "array", "items": {"type": "string"}},
+    "payload": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["document_id", "chunk_count", "index_ref", "parse_status"],
+      "properties": {
+        "document_id": {"type": "string"},
+        "chunk_count": {"type": "integer", "minimum": 0},
+        "index_ref": {"type": "string", "description": "Storage-neutral index reference."},
+        "parse_status": {"type": "string", "const": "indexed"}
+      }
+    }
+  }
+}

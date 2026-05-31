@@ -1,0 +1,16 @@
+{
+  "event_id": "evt_document_indexed_demo",
+  "event_name": "document.indexed.v1",
+  "event_version": "v1",
+  "occurred_at": "2026-05-31T08:05:00Z",
+  "tenant_id": "tenant_demo",
+  "trace_id": "trace_demo",
+  "producer": "rag-service",
+  "consumers": ["document-entrypoint", "web-console-stream"],
+  "payload": {
+    "document_id": "doc_demo",
+    "chunk_count": 12,
+    "index_ref": "index_demo_storage_neutral",
+    "parse_status": "indexed"
+  }
+}

@@ -1,0 +1,9 @@
+{
+  "error_code": "AGENT_TASK_FAILED",
+  "message": "Agent task failed before completion.",
+  "details": {
+    "task_id": "task_demo"
+  },
+  "trace_id": "trace_demo",
+  "retryable": true
+}

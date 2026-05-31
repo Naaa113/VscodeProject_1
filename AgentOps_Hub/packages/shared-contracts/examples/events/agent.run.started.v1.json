@@ -1,0 +1,18 @@
+{
+  "event_id": "evt_agent_run_started_demo",
+  "event_name": "agent.run.started.v1",
+  "event_version": "v1",
+  "occurred_at": "2026-05-31T08:01:00Z",
+  "tenant_id": "tenant_demo",
+  "trace_id": "trace_demo",
+  "producer": "agent-service",
+  "consumers": ["java-task-entrypoint", "web-console-stream"],
+  "payload": {
+    "task_id": "task_demo",
+    "run_id": "run_demo",
+    "graph_name": "mvp-analysis",
+    "graph_version": "v1",
+    "status": "started",
+    "started_at": "2026-05-31T08:01:00Z"
+  }
+}

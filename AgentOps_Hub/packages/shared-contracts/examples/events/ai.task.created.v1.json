@@ -1,0 +1,19 @@
+{
+  "event_id": "evt_ai_task_created_demo",
+  "event_name": "ai.task.created.v1",
+  "event_version": "v1",
+  "occurred_at": "2026-05-31T08:00:00Z",
+  "tenant_id": "tenant_demo",
+  "trace_id": "trace_demo",
+  "producer": "java-task-entrypoint",
+  "consumers": ["agent-service"],
+  "payload": {
+    "task_id": "task_demo",
+    "tenant_id": "tenant_demo",
+    "created_by": "user_demo",
+    "task_type": "complaint_analysis",
+    "prompt": "Summarize recent complaint drivers.",
+    "priority": "normal",
+    "status": "pending"
+  }
+}

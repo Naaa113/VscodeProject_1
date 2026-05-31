@@ -1,0 +1,33 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://agentops-hub.local/contracts/schemas/status.v1.schema.json",
+  "title": "AgentOps Hub Status Enums v1",
+  "type": "object",
+  "additionalProperties": false,
+  "properties": {
+    "ai_task_status": {
+      "type": "string",
+      "enum": ["pending", "running", "waiting_approval", "success", "failed", "cancelled"]
+    },
+    "agent_run_status": {
+      "type": "string",
+      "enum": ["created", "started", "step_running", "completed", "failed"]
+    },
+    "agent_step_status": {
+      "type": "string",
+      "enum": ["pending", "running", "success", "failed", "skipped", "waiting_human"]
+    },
+    "approval_instance_status": {
+      "type": "string",
+      "enum": ["pending", "approved", "rejected", "cancelled", "expired"]
+    },
+    "action_command_status": {
+      "type": "string",
+      "enum": ["pending", "success", "failed", "cancelled"]
+    },
+    "document_parse_status": {
+      "type": "string",
+      "enum": ["uploaded", "parsing", "indexed", "failed"]
+    }
+  }
+}

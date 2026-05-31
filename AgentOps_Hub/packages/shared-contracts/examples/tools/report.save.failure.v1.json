@@ -1,0 +1,14 @@
+{
+  "tool_name": "report.save.v1",
+  "tool_version": "v1",
+  "tenant_id": "tenant_demo",
+  "trace_id": "trace_demo",
+  "status": "failed",
+  "output": null,
+  "error": {
+    "error_code": "VALIDATION_FAILED",
+    "message": "Report citations are required.",
+    "trace_id": "trace_demo",
+    "retryable": false
+  }
+}

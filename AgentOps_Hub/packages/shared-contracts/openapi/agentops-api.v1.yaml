@@ -1,0 +1,701 @@
+openapi: 3.1.0
+info:
+  title: AgentOps Hub MVP API
+  version: v1
+  description: Contract draft only. No runtime service is implemented by this file.
+servers:
+  - url: https://agentops.example.local
+    description: Contract placeholder URL
+tags:
+  - name: auth
+  - name: tickets
+  - name: ai-tasks
+  - name: knowledge
+  - name: stream
+paths:
+  /api/auth/login:
+    post:
+      tags: [auth]
+      operationId: login
+      summary: Authenticate a user for a tenant.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/LoginRequest'
+      responses:
+        '200':
+          description: Login succeeded.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/LoginResponse'
+        '401':
+          $ref: '#/components/responses/ErrorResponse'
+  /api/auth/me:
+    get:
+      tags: [auth]
+      operationId: getCurrentUser
+      summary: Return the current user and tenant context.
+      parameters:
+        - $ref: '#/components/parameters/TenantIdHeader'
+        - $ref: '#/components/parameters/TraceIdHeader'
+      responses:
+        '200':
+          description: Current user context.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CurrentUserResponse'
+        '401':
+          $ref: '#/components/responses/ErrorResponse'
+  /api/tickets:
+    get:
+      tags: [tickets]
+      operationId: listTickets
+      summary: List tickets with paging.
+      parameters:
+        - $ref: '#/components/parameters/TenantIdHeader'
+        - $ref: '#/components/parameters/TraceIdHeader'
+        - $ref: '#/components/parameters/Page'
+        - $ref: '#/components/parameters/PageSize'
+      responses:
+        '200':
+          description: Ticket list.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TicketListResponse'
+        '400':
+          $ref: '#/components/responses/ErrorResponse'
+    post:
+      tags: [tickets]
+      operationId: createTicket
+      summary: Create a ticket draft in the ticket domain.
+      parameters:
+        - $ref: '#/components/parameters/TenantIdHeader'
+        - $ref: '#/components/parameters/TraceIdHeader'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CreateTicketRequest'
+      responses:
+        '201':
+          description: Ticket created.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TicketDetail'
+        '400':
+          $ref: '#/components/responses/ErrorResponse'
+  /api/tickets/{id}:
+    get:
+      tags: [tickets]
+      operationId: getTicket
+      summary: Return one ticket.
+      parameters:
+        - $ref: '#/components/parameters/TenantIdHeader'
+        - $ref: '#/components/parameters/TraceIdHeader'
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Ticket detail.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TicketDetail'
+        '404':
+          $ref: '#/components/responses/ErrorResponse'
+  /api/ai/tasks:
+    get:
+      tags: [ai-tasks]
+      operationId: listAiTasks
+      summary: List AI tasks with paging.
+      parameters:
+        - $ref: '#/components/parameters/TenantIdHeader'
+        - $ref: '#/components/parameters/TraceIdHeader'
+        - $ref: '#/components/parameters/Page'
+        - $ref: '#/components/parameters/PageSize'
+      responses:
+        '200':
+          description: AI task list.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AiTaskListResponse'
+        '400':
+          $ref: '#/components/responses/ErrorResponse'
+    post:
+      tags: [ai-tasks]
+      operationId: createAiTask
+      summary: Create an AI task request.
+      parameters:
+        - $ref: '#/components/parameters/TenantIdHeader'
+        - $ref: '#/components/parameters/TraceIdHeader'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CreateAiTaskRequest'
+      responses:
+        '202':
+          description: AI task accepted for asynchronous processing.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AiTask'
+        '400':
+          $ref: '#/components/responses/ErrorResponse'
+  /api/ai/tasks/{id}:
+    get:
+      tags: [ai-tasks]
+      operationId: getAiTask
+      summary: Return AI task status.
+      parameters:
+        - $ref: '#/components/parameters/TenantIdHeader'
+        - $ref: '#/components/parameters/TraceIdHeader'
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: AI task detail.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AiTask'
+        '404':
+          $ref: '#/components/responses/ErrorResponse'
+  /api/ai/tasks/{id}/steps:
+    get:
+      tags: [ai-tasks]
+      operationId: listAiTaskSteps
+      summary: Return Agent steps for a task.
+      parameters:
+        - $ref: '#/components/parameters/TenantIdHeader'
+        - $ref: '#/components/parameters/TraceIdHeader'
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Agent steps.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AgentStepListResponse'
+        '404':
+          $ref: '#/components/responses/ErrorResponse'
+  /api/ai/tasks/{id}/report:
+    get:
+      tags: [ai-tasks]
+      operationId: getAiTaskReport
+      summary: Return the report for a completed task.
+      parameters:
+        - $ref: '#/components/parameters/TenantIdHeader'
+        - $ref: '#/components/parameters/TraceIdHeader'
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Report summary.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ReportSummary'
+        '404':
+          $ref: '#/components/responses/ErrorResponse'
+  /api/knowledge/documents:
+    get:
+      tags: [knowledge]
+      operationId: listDocuments
+      summary: List knowledge documents.
+      parameters:
+        - $ref: '#/components/parameters/TenantIdHeader'
+        - $ref: '#/components/parameters/TraceIdHeader'
+        - $ref: '#/components/parameters/Page'
+        - $ref: '#/components/parameters/PageSize'
+      responses:
+        '200':
+          description: Document list.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DocumentListResponse'
+        '400':
+          $ref: '#/components/responses/ErrorResponse'
+    post:
+      tags: [knowledge]
+      operationId: registerDocument
+      summary: Register a document upload for future parsing.
+      parameters:
+        - $ref: '#/components/parameters/TenantIdHeader'
+        - $ref: '#/components/parameters/TraceIdHeader'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/RegisterDocumentRequest'
+      responses:
+        '202':
+          description: Document registered for parsing.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DocumentSummary'
+        '400':
+          $ref: '#/components/responses/ErrorResponse'
+  /api/knowledge/search:
+    post:
+      tags: [knowledge]
+      operationId: searchKnowledge
+      summary: Search knowledge with storage-neutral citations.
+      parameters:
+        - $ref: '#/components/parameters/TenantIdHeader'
+        - $ref: '#/components/parameters/TraceIdHeader'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/KnowledgeSearchRequest'
+      responses:
+        '200':
+          description: Knowledge search results.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/KnowledgeSearchResponse'
+        '400':
+          $ref: '#/components/responses/ErrorResponse'
+  /api/stream/tasks/{id}:
+    get:
+      tags: [stream]
+      operationId: streamTaskStatus
+      summary: SSE stream for task status.
+      parameters:
+        - $ref: '#/components/parameters/TenantIdHeader'
+        - $ref: '#/components/parameters/TraceIdHeader'
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: SSE stream. Events carry task and Agent status payloads defined by shared contracts.
+          content:
+            text/event-stream:
+              schema:
+                type: string
+        '404':
+          $ref: '#/components/responses/ErrorResponse'
+components:
+  parameters:
+    TenantIdHeader:
+      name: X-Tenant-Id
+      in: header
+      required: true
+      schema:
+        type: string
+    TraceIdHeader:
+      name: X-Trace-Id
+      in: header
+      required: true
+      schema:
+        type: string
+    Page:
+      name: page
+      in: query
+      required: false
+      schema:
+        type: integer
+        minimum: 1
+        default: 1
+    PageSize:
+      name: page_size
+      in: query
+      required: false
+      schema:
+        type: integer
+        minimum: 1
+        maximum: 100
+        default: 20
+  responses:
+    ErrorResponse:
+      description: Unified error response.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorResponse'
+  schemas:
+    ErrorResponse:
+      type: object
+      required: [error_code, message, trace_id, retryable]
+      properties:
+        error_code:
+          type: string
+        message:
+          type: string
+        details:
+          type: object
+          additionalProperties: true
+        trace_id:
+          type: string
+        retryable:
+          type: boolean
+    AuditFields:
+      type: object
+      required: [created_by, created_at]
+      properties:
+        created_by:
+          type: string
+        created_at:
+          type: string
+          format: date-time
+        updated_by:
+          type: string
+          nullable: true
+        updated_at:
+          type: string
+          format: date-time
+          nullable: true
+    PageMeta:
+      type: object
+      required: [page, page_size, total]
+      properties:
+        page:
+          type: integer
+        page_size:
+          type: integer
+        total:
+          type: integer
+    LoginRequest:
+      type: object
+      required: [tenant_id, username, password]
+      properties:
+        tenant_id:
+          type: string
+        username:
+          type: string
+        password:
+          type: string
+          format: password
+    LoginResponse:
+      type: object
+      required: [tenant_id, user_id, access_token, expires_at]
+      properties:
+        tenant_id:
+          type: string
+        user_id:
+          type: string
+        access_token:
+          type: string
+        expires_at:
+          type: string
+          format: date-time
+    CurrentUserResponse:
+      type: object
+      required: [tenant_id, user_id, username, roles, permissions]
+      properties:
+        tenant_id:
+          type: string
+        user_id:
+          type: string
+        username:
+          type: string
+        roles:
+          type: array
+          items:
+            type: string
+        permissions:
+          type: array
+          items:
+            type: string
+    TicketSummary:
+      type: object
+      required: [ticket_id, tenant_id, title, status, priority, audit]
+      properties:
+        ticket_id:
+          type: string
+        tenant_id:
+          type: string
+        title:
+          type: string
+        status:
+          type: string
+        priority:
+          type: string
+          enum: [low, normal, high, urgent]
+        audit:
+          $ref: '#/components/schemas/AuditFields'
+    TicketDetail:
+      allOf:
+        - $ref: '#/components/schemas/TicketSummary'
+        - type: object
+          required: [description]
+          properties:
+            description:
+              type: string
+            sla_due_at:
+              type: string
+              format: date-time
+              nullable: true
+    CreateTicketRequest:
+      type: object
+      required: [title, description, priority]
+      properties:
+        title:
+          type: string
+        description:
+          type: string
+        priority:
+          type: string
+          enum: [low, normal, high, urgent]
+    TicketListResponse:
+      type: object
+      required: [items, page]
+      properties:
+        items:
+          type: array
+          items:
+            $ref: '#/components/schemas/TicketSummary'
+        page:
+          $ref: '#/components/schemas/PageMeta'
+    AiTaskStatus:
+      type: string
+      enum: [pending, running, waiting_approval, success, failed, cancelled]
+    AiTask:
+      type: object
+      required: [task_id, tenant_id, task_type, prompt, status, created_by, created_at]
+      properties:
+        task_id:
+          type: string
+        tenant_id:
+          type: string
+        task_type:
+          type: string
+        prompt:
+          type: string
+        status:
+          $ref: '#/components/schemas/AiTaskStatus'
+        run_id:
+          type: string
+          nullable: true
+        approval_instance_id:
+          type: string
+          nullable: true
+        blocking_reason:
+          type: string
+          nullable: true
+        report_id:
+          type: string
+          nullable: true
+        error:
+          $ref: '#/components/schemas/ErrorResponse'
+        retryable:
+          type: boolean
+          nullable: true
+        cancelled_by:
+          type: string
+          nullable: true
+        created_by:
+          type: string
+        created_at:
+          type: string
+          format: date-time
+    CreateAiTaskRequest:
+      type: object
+      required: [task_type, prompt, priority]
+      properties:
+        task_type:
+          type: string
+        prompt:
+          type: string
+        priority:
+          type: string
+          enum: [low, normal, high]
+    AiTaskListResponse:
+      type: object
+      required: [items, page]
+      properties:
+        items:
+          type: array
+          items:
+            $ref: '#/components/schemas/AiTask'
+        page:
+          $ref: '#/components/schemas/PageMeta'
+    AgentStep:
+      type: object
+      required: [task_id, run_id, step_id, agent_name, step_name, status, started_at]
+      properties:
+        task_id:
+          type: string
+        run_id:
+          type: string
+        step_id:
+          type: string
+        agent_name:
+          type: string
+        step_name:
+          type: string
+        status:
+          type: string
+          enum: [pending, running, success, failed, skipped, waiting_human]
+        started_at:
+          type: string
+          format: date-time
+        finished_at:
+          type: string
+          format: date-time
+          nullable: true
+        output_summary:
+          type: string
+          nullable: true
+        citations:
+          type: array
+          items:
+            $ref: '#/components/schemas/Citation'
+        error:
+          $ref: '#/components/schemas/ErrorResponse'
+    AgentStepListResponse:
+      type: object
+      required: [items]
+      properties:
+        items:
+          type: array
+          items:
+            $ref: '#/components/schemas/AgentStep'
+    ReportSummary:
+      type: object
+      required: [report_id, task_id, tenant_id, title, facts, inferences, recommendations, citations]
+      properties:
+        report_id:
+          type: string
+        task_id:
+          type: string
+        tenant_id:
+          type: string
+        title:
+          type: string
+        facts:
+          type: array
+          items:
+            type: string
+        inferences:
+          type: array
+          items:
+            type: string
+        recommendations:
+          type: array
+          items:
+            type: string
+        citations:
+          type: array
+          items:
+            $ref: '#/components/schemas/Citation'
+    DocumentSummary:
+      type: object
+      required: [document_id, knowledge_base_id, tenant_id, filename, parse_status]
+      properties:
+        document_id:
+          type: string
+        knowledge_base_id:
+          type: string
+        tenant_id:
+          type: string
+        filename:
+          type: string
+        parse_status:
+          type: string
+          enum: [uploaded, parsing, indexed, failed]
+        chunk_count:
+          type: integer
+          nullable: true
+        index_ref:
+          type: string
+          nullable: true
+        error:
+          $ref: '#/components/schemas/ErrorResponse'
+    DocumentListResponse:
+      type: object
+      required: [items, page]
+      properties:
+        items:
+          type: array
+          items:
+            $ref: '#/components/schemas/DocumentSummary'
+        page:
+          $ref: '#/components/schemas/PageMeta'
+    RegisterDocumentRequest:
+      type: object
+      required: [knowledge_base_id, filename, object_key]
+      properties:
+        knowledge_base_id:
+          type: string
+        filename:
+          type: string
+        object_key:
+          type: string
+    KnowledgeSearchRequest:
+      type: object
+      required: [query, top_k]
+      properties:
+        query:
+          type: string
+        top_k:
+          type: integer
+          minimum: 1
+          maximum: 20
+        filters:
+          type: object
+          additionalProperties: true
+    KnowledgeSearchResponse:
+      type: object
+      required: [items]
+      properties:
+        items:
+          type: array
+          items:
+            type: object
+            required: [document_id, chunk_id, snippet, score, citation]
+            properties:
+              document_id:
+                type: string
+              chunk_id:
+                type: string
+              snippet:
+                type: string
+              score:
+                type: number
+              citation:
+                $ref: '#/components/schemas/Citation'
+    Citation:
+      type: object
+      required: [document_id, chunk_id, source_title]
+      properties:
+        document_id:
+          type: string
+        chunk_id:
+          type: string
+        source_title:
+          type: string
+        source_uri:
+          type: string
+          nullable: true

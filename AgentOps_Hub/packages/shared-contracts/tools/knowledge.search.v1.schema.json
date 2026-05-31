@@ -1,0 +1,83 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://agentops-hub.local/contracts/tools/knowledge.search.v1.schema.json",
+  "title": "knowledge.search.v1",
+  "type": "object",
+  "x_tool": {
+    "name": "knowledge.search.v1",
+    "version": "v1",
+    "host": "rag-service",
+    "permission": "knowledge:search",
+    "requires_approval": false,
+    "idempotency": "Not required for read-only search.",
+    "timeout_ms": 5000,
+    "retry": {"max_attempts": 2, "backoff_ms": 300},
+    "audit_fields": ["tenant_id", "requested_by", "trace_id"]
+  },
+  "additionalProperties": false,
+  "required": ["request", "response"],
+  "properties": {
+    "request": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["tool_name", "tool_version", "tenant_id", "requested_by", "trace_id", "input"],
+      "properties": {
+        "tool_name": {"type": "string", "const": "knowledge.search.v1"},
+        "tool_version": {"type": "string", "const": "v1"},
+        "tenant_id": {"type": "string"},
+        "requested_by": {"type": "string"},
+        "trace_id": {"type": "string"},
+        "input": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["query", "top_k"],
+          "properties": {
+            "query": {"type": "string"},
+            "top_k": {"type": "integer", "minimum": 1, "maximum": 20},
+            "filters": {"type": "object", "additionalProperties": true}
+          }
+        }
+      }
+    },
+    "response": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["tool_name", "tool_version", "tenant_id", "trace_id", "status"],
+      "properties": {
+        "tool_name": {"type": "string", "const": "knowledge.search.v1"},
+        "tool_version": {"type": "string", "const": "v1"},
+        "tenant_id": {"type": "string"},
+        "trace_id": {"type": "string"},
+        "status": {"type": "string", "enum": ["success", "failed"]},
+        "output": {
+          "type": ["object", "null"],
+          "properties": {
+            "items": {
+              "type": "array",
+              "items": {
+                "type": "object",
+                "required": ["document_id", "chunk_id", "snippet", "score", "citation"],
+                "properties": {
+                  "document_id": {"type": "string"},
+                  "chunk_id": {"type": "string"},
+                  "snippet": {"type": "string"},
+                  "score": {"type": "number"},
+                  "citation": {
+                    "type": "object",
+                    "required": ["document_id", "chunk_id", "source_title"],
+                    "properties": {
+                      "document_id": {"type": "string"},
+                      "chunk_id": {"type": "string"},
+                      "source_title": {"type": "string"}
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "error": {"type": ["object", "null"]}
+      }
+    }
+  }
+}

@@ -1,0 +1,34 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://agentops-hub.local/contracts/events/agent.run.failed.v1.schema.json",
+  "title": "agent.run.failed.v1",
+  "type": "object",
+  "x_producer": "agent-service",
+  "x_consumers": ["java-task-entrypoint", "web-console-stream"],
+  "x_compatibility": "Additive payload fields are compatible within v1.",
+  "additionalProperties": false,
+  "required": ["event_id", "event_name", "event_version", "occurred_at", "tenant_id", "trace_id", "producer", "consumers", "payload"],
+  "properties": {
+    "event_id": {"type": "string"},
+    "event_name": {"type": "string", "const": "agent.run.failed.v1"},
+    "event_version": {"type": "string", "const": "v1"},
+    "occurred_at": {"type": "string", "format": "date-time"},
+    "tenant_id": {"type": "string"},
+    "trace_id": {"type": "string"},
+    "producer": {"type": "string", "const": "agent-service"},
+    "consumers": {"type": "array", "items": {"type": "string"}},
+    "payload": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["task_id", "run_id", "error_code", "message", "retryable", "failed_at"],
+      "properties": {
+        "task_id": {"type": "string"},
+        "run_id": {"type": "string"},
+        "error_code": {"type": "string"},
+        "message": {"type": "string"},
+        "retryable": {"type": "boolean"},
+        "failed_at": {"type": "string", "format": "date-time"}
+      }
+    }
+  }
+}

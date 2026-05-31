@@ -1,0 +1,21 @@
+{
+  "tool_name": "ticket.search.v1",
+  "tool_version": "v1",
+  "tenant_id": "tenant_demo",
+  "trace_id": "trace_demo",
+  "status": "success",
+  "output": {
+    "items": [
+      {
+        "ticket_id": "ticket_demo",
+        "title": "Example ticket",
+        "status": "open",
+        "priority": "normal"
+      }
+    ],
+    "page": 1,
+    "page_size": 20,
+    "total": 1
+  },
+  "error": null
+}

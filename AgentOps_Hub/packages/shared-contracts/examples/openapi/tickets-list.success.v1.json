@@ -1,0 +1,20 @@
+{
+  "items": [
+    {
+      "ticket_id": "ticket_demo",
+      "tenant_id": "tenant_demo",
+      "title": "Example ticket",
+      "status": "open",
+      "priority": "normal",
+      "audit": {
+        "created_by": "user_demo",
+        "created_at": "2026-05-31T08:00:00Z"
+      }
+    }
+  ],
+  "page": {
+    "page": 1,
+    "page_size": 20,
+    "total": 1
+  }
+}

@@ -1,0 +1,18 @@
+{
+  "event_id": "evt_agent_run_completed_demo",
+  "event_name": "agent.run.completed.v1",
+  "event_version": "v1",
+  "occurred_at": "2026-05-31T08:10:00Z",
+  "tenant_id": "tenant_demo",
+  "trace_id": "trace_demo",
+  "producer": "agent-service",
+  "consumers": ["java-task-entrypoint", "web-console-stream"],
+  "payload": {
+    "task_id": "task_demo",
+    "run_id": "run_demo",
+    "report_id": "report_demo",
+    "status": "completed",
+    "no_report_reason": null,
+    "finished_at": "2026-05-31T08:10:00Z"
+  }
+}
