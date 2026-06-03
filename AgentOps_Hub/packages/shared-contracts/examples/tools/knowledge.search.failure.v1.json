@@ -1,0 +1,14 @@
+{
+  "tool_name": "knowledge.search.v1",
+  "tool_version": "v1",
+  "tenant_id": "tenant_demo",
+  "trace_id": "trace_demo",
+  "status": "failed",
+  "output": null,
+  "error": {
+    "error_code": "DOWNSTREAM_UNAVAILABLE",
+    "message": "Knowledge search dependency is unavailable.",
+    "trace_id": "trace_demo",
+    "retryable": true
+  }
+}

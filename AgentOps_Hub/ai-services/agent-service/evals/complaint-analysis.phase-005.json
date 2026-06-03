@@ -1,0 +1,20 @@
+{
+  "phase": "005",
+  "name": "complaint-analysis-minimal-eval",
+  "description": "最小 AI eval 样例，覆盖完成路径、工具成功、失败路径和人工确认占位。",
+  "cases": [
+    {
+      "case_id": "workflow_completed_with_human_boundary",
+      "task_type": "complaint_analysis",
+      "expect_status": "waiting_approval",
+      "expect_waiting_human": true,
+      "mock_sources_required": true
+    },
+    {
+      "case_id": "ticket_tool_failure_path",
+      "task_type": "complaint_analysis",
+      "expect_status": "failed",
+      "expect_retryable_error": true
+    }
+  ]
+}

@@ -1,0 +1,10 @@
+[project]
+name = "agentops-rag-service"
+version = "0.1.0"
+description = "Phase 007 local RAG runtime for AgentOps Hub."
+requires-python = ">=3.11"
+dependencies = []
+
+[tool.pytest.ini_options]
+pythonpath = ["src"]
+testpaths = ["tests"]

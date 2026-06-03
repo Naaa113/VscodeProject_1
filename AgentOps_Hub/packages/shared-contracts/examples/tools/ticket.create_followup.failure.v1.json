@@ -1,0 +1,17 @@
+{
+  "tool_name": "ticket.create_followup.v1",
+  "tool_version": "v1",
+  "tenant_id": "tenant_demo",
+  "trace_id": "trace_demo_conflict",
+  "status": "failed",
+  "output": null,
+  "error": {
+    "error_code": "CONFLICT",
+    "message": "Idempotency key already exists with a different payload.",
+    "trace_id": "trace_demo_conflict",
+    "retryable": false,
+    "details": {
+      "idempotency_key": "followup:ticket_demo"
+    }
+  }
+}

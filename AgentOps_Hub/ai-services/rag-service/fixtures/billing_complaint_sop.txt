@@ -1,0 +1,7 @@
+Billing Complaint Escalation SOP
+
+Urgent billing complaints must be reviewed by a support supervisor before any customer-facing action is taken. The review should confirm the billing event, customer impact, and whether the customer has already received a response.
+
+When multiple billing complaints arrive within seven days, the operations analyst should compare ticket categories, SLA deadlines, and repeated customer identifiers. The report may recommend human review, but it must not create follow-up tasks automatically.
+
+Every report citation must point to the document identifier and chunk identifier that supported the conclusion.

@@ -70,8 +70,43 @@
             "report_id": {"type": "string"}
           }
         },
-        "error": {"type": ["object", "null"]}
-      }
+        "error": {
+          "oneOf": [
+            {"type": "null"},
+            {
+              "type": "object",
+              "additionalProperties": false,
+              "required": ["error_code", "message", "trace_id", "retryable"],
+              "properties": {
+                "error_code": {"type": "string"},
+                "message": {"type": "string"},
+                "trace_id": {"type": "string"},
+                "retryable": {"type": "boolean"},
+                "details": {"type": "object", "additionalProperties": true}
+              }
+            }
+          ]
+        }
+      },
+      "allOf": [
+        {
+          "if": {
+            "properties": {
+              "status": {"const": "failed"}
+            },
+            "required": ["status"]
+          },
+          "then": {
+            "required": ["error"],
+            "properties": {
+              "error": {
+                "type": "object",
+                "required": ["error_code", "message", "trace_id", "retryable"]
+              }
+            }
+          }
+        }
+      ]
     }
   }
 }

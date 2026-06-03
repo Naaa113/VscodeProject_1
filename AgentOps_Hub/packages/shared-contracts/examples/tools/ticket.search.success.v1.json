@@ -8,9 +8,13 @@
     "items": [
       {
         "ticket_id": "ticket_demo",
+        "tenant_id": "tenant_demo",
         "title": "Example ticket",
         "status": "open",
-        "priority": "normal"
+        "priority": "normal",
+        "customer_id": "customer_demo",
+        "category": "complaint",
+        "sla_due_at": "2026-06-02T08:00:00Z"
       }
     ],
     "page": 1,

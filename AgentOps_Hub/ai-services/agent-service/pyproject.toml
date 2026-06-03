@@ -1,0 +1,10 @@
+[project]
+name = "agentops-agent-service"
+version = "0.1.0"
+description = "Phase 005 local Agent orchestration runtime for AgentOps Hub."
+requires-python = ">=3.11"
+dependencies = []
+
+[tool.pytest.ini_options]
+pythonpath = ["src"]
+testpaths = ["tests"]

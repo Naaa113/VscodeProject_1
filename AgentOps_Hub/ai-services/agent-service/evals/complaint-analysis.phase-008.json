@@ -1,0 +1,10 @@
+{
+  "case_id": "workflow_waiting_approval_with_real_approval_reference",
+  "task_type": "complaint_analysis",
+  "prompt": "Analyze billing complaint growth and request human-approved follow-up handling.",
+  "priority": "high",
+  "expect_status": "waiting_approval",
+  "expect_waiting_human": true,
+  "expect_approval_requested": true,
+  "expect_report_generated": true
+}

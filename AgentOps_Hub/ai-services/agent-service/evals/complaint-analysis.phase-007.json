@@ -1,0 +1,21 @@
+{
+  "phase": "007",
+  "name": "complaint-analysis-rag-citation-eval",
+  "description": "Minimal Agent eval for local RAG citations consumed through knowledge.search.v1.",
+  "cases": [
+    {
+      "case_id": "workflow_completed_with_human_boundary",
+      "task_type": "complaint_analysis",
+      "expect_status": "waiting_approval",
+      "expect_waiting_human": true,
+      "local_rag_source_required": true,
+      "non_mock_citation_required": true
+    },
+    {
+      "case_id": "ticket_tool_failure_path",
+      "task_type": "complaint_analysis",
+      "expect_status": "failed",
+      "expect_retryable_error": true
+    }
+  ]
+}

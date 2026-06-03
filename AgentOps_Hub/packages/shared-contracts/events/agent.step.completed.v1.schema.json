@@ -42,10 +42,29 @@
           }
         },
         "error_code": {"type": ["string", "null"]},
+        "message": {"type": ["string", "null"]},
         "retryable": {"type": ["boolean", "null"]},
         "started_at": {"type": "string", "format": "date-time"},
         "finished_at": {"type": "string", "format": "date-time"}
-      }
+      },
+      "allOf": [
+        {
+          "if": {
+            "properties": {
+              "status": {"const": "failed"}
+            },
+            "required": ["status"]
+          },
+          "then": {
+            "required": ["error_code", "message", "retryable"],
+            "properties": {
+              "error_code": {"type": "string", "minLength": 1},
+              "message": {"type": "string", "minLength": 1},
+              "retryable": {"type": "boolean"}
+            }
+          }
+        }
+      ]
     }
   }
 }

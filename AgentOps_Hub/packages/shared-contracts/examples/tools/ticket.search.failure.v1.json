@@ -1,0 +1,14 @@
+{
+  "tool_name": "ticket.search.v1",
+  "tool_version": "v1",
+  "tenant_id": "tenant_demo",
+  "trace_id": "trace_demo",
+  "status": "failed",
+  "output": null,
+  "error": {
+    "error_code": "VALIDATION_FAILED",
+    "message": "Request validation failed.",
+    "trace_id": "trace_demo",
+    "retryable": false
+  }
+}

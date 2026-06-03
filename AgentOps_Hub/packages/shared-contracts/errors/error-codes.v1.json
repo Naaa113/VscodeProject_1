@@ -18,6 +18,7 @@
     {"code": "AGENT_TOOL_FORBIDDEN", "http_status": 403, "retryable": false, "owner": "workflow-service"},
     {"code": "APPROVAL_REQUIRED", "http_status": 409, "retryable": false, "owner": "workflow-service"},
     {"code": "DOCUMENT_PARSE_FAILED", "http_status": 422, "retryable": true, "owner": "rag-service"},
+    {"code": "DOWNSTREAM_UNAVAILABLE", "http_status": 503, "retryable": true, "owner": "contract-consumer"},
     {"code": "INTERNAL_ERROR", "http_status": 500, "retryable": true, "owner": "platform"}
   ]
 }

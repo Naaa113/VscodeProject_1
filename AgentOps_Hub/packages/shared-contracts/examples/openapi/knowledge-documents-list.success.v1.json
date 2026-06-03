@@ -1,0 +1,19 @@
+{
+  "items": [
+    {
+      "document_id": "doc_billing_complaint_sop",
+      "knowledge_base_id": "kb_support_policy",
+      "tenant_id": "tenant_demo",
+      "filename": "billing_complaint_sop.txt",
+      "parse_status": "indexed",
+      "chunk_count": 2,
+      "index_ref": "local-index://tenant/tenant_demo/knowledge-base/kb_support_policy/document/doc_billing_complaint_sop",
+      "error": null
+    }
+  ],
+  "page": {
+    "page": 1,
+    "page_size": 20,
+    "total": 1
+  }
+}

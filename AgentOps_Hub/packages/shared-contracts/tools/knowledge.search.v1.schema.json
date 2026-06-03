@@ -62,22 +62,73 @@
                   "chunk_id": {"type": "string"},
                   "snippet": {"type": "string"},
                   "score": {"type": "number"},
+                  "mock_source": {
+                    "type": "boolean",
+                    "description": "True only when Phase 005 local Agent runtime returns explicit mock knowledge."
+                  },
                   "citation": {
                     "type": "object",
                     "required": ["document_id", "chunk_id", "source_title"],
                     "properties": {
                       "document_id": {"type": "string"},
                       "chunk_id": {"type": "string"},
-                      "source_title": {"type": "string"}
+                      "source_title": {"type": "string"},
+                      "source_uri": {
+                        "type": "string",
+                        "description": "Storage-neutral citation URI that can locate the source document chunk."
+                      },
+                      "mock_source": {
+                        "type": "boolean",
+                        "description": "True only for explicit mock citations in Phase 005 local runtime."
+                      }
                     }
                   }
                 }
               }
+            },
+            "mock_source": {
+              "type": "boolean",
+              "description": "True only when the entire response is a Phase 005 local mock result."
             }
           }
         },
-        "error": {"type": ["object", "null"]}
-      }
+        "error": {
+          "oneOf": [
+            {"type": "null"},
+            {
+              "type": "object",
+              "additionalProperties": false,
+              "required": ["error_code", "message", "trace_id", "retryable"],
+              "properties": {
+                "error_code": {"type": "string"},
+                "message": {"type": "string"},
+                "trace_id": {"type": "string"},
+                "retryable": {"type": "boolean"},
+                "details": {"type": "object", "additionalProperties": true}
+              }
+            }
+          ]
+        }
+      },
+      "allOf": [
+        {
+          "if": {
+            "properties": {
+              "status": {"const": "failed"}
+            },
+            "required": ["status"]
+          },
+          "then": {
+            "required": ["error"],
+            "properties": {
+              "error": {
+                "type": "object",
+                "required": ["error_code", "message", "trace_id", "retryable"]
+              }
+            }
+          }
+        }
+      ]
     }
   }
 }

@@ -1,0 +1,5 @@
+Refund Policy FAQ
+
+Refund requests require a policy citation, the original order reference, and the reason supplied by the customer. Exceptions must be documented before an operator sends external communication.
+
+If the confidence of the analysis is low, the recommendation should wait for human confirmation. The Agent may summarize the evidence but must not execute an approval, notification, or ticket status change.

@@ -1,0 +1,32 @@
+# OS and editor noise
+.DS_Store
+Thumbs.db
+.idea/
+.vscode/
+*.swp
+
+# Local environment
+.env
+.env.*
+!.env.example
+
+# Logs and temporary output
+*.log
+tmp/
+temp/
+
+# Dependency and build output placeholders for future phases
+node_modules/
+target/
+build/
+dist/
+__pycache__/
+.pytest_cache/
+.venv/
+venv/
+
+# Secrets and local credentials
+*.pem
+*.key
+*.p12
+*.pfx

@@ -7,17 +7,21 @@
   "output": {
     "items": [
       {
-        "document_id": "doc_demo",
-        "chunk_id": "chunk_demo",
-        "snippet": "Example cited content.",
-        "score": 0.91,
+        "document_id": "doc_billing_complaint_sop",
+        "chunk_id": "doc_billing_complaint_sop_chunk_001",
+        "snippet": "Urgent billing complaints must be reviewed by a support supervisor before any customer-facing action is taken.",
+        "score": 0.4472,
+        "mock_source": false,
         "citation": {
-          "document_id": "doc_demo",
-          "chunk_id": "chunk_demo",
-          "source_title": "Example SOP"
+          "document_id": "doc_billing_complaint_sop",
+          "chunk_id": "doc_billing_complaint_sop_chunk_001",
+          "source_title": "billing_complaint_sop.txt",
+          "source_uri": "local-index://tenant/tenant_demo/knowledge-base/kb_support_policy/document/doc_billing_complaint_sop#chunk/doc_billing_complaint_sop_chunk_001",
+          "mock_source": false
         }
       }
-    ]
+    ],
+    "mock_source": false
   },
   "error": null
 }

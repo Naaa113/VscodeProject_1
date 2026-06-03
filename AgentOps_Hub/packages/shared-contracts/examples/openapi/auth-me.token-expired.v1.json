@@ -1,0 +1,6 @@
+{
+  "error_code": "AUTH_TOKEN_EXPIRED",
+  "message": "Authentication token expired.",
+  "trace_id": "trace_demo",
+  "retryable": true
+}

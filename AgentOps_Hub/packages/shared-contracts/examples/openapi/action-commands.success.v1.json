@@ -1,0 +1,19 @@
+{
+  "action_command_id": "action_demo_001",
+  "approval_instance_id": "approval_demo_001",
+  "tenant_id": "tenant_demo",
+  "action_type": "ticket_create_followup",
+  "target_type": "ticket",
+  "target_id": "ticket_demo",
+  "idempotency_key": "followup:ticket_demo:task_complaint_demo",
+  "status": "success",
+  "created_by": "user_supervisor",
+  "created_at": "2026-06-03T08:15:00Z",
+  "executed_at": "2026-06-03T08:15:01Z",
+  "result_payload": {
+    "followup_task_ref": "followup_ref_001",
+    "ticket_id": "ticket_demo",
+    "created_at": "2026-06-03T08:15:01Z",
+    "created_by": "user_supervisor"
+  }
+}

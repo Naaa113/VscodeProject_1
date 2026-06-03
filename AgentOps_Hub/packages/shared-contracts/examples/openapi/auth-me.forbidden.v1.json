@@ -1,0 +1,6 @@
+{
+  "error_code": "AUTH_FORBIDDEN",
+  "message": "Forbidden.",
+  "trace_id": "trace_demo",
+  "retryable": false
+}

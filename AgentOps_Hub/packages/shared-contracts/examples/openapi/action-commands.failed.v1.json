@@ -1,0 +1,23 @@
+{
+  "action_command_id": "action_demo_002",
+  "approval_instance_id": "approval_demo_004",
+  "tenant_id": "tenant_demo",
+  "action_type": "ticket_create_followup",
+  "target_type": "ticket",
+  "target_id": "ticket_demo",
+  "idempotency_key": "followup:ticket_demo:task_failure_demo",
+  "status": "failed",
+  "created_by": "user_supervisor",
+  "created_at": "2026-06-03T08:20:00Z",
+  "executed_at": "2026-06-03T08:20:01Z",
+  "result_payload": null,
+  "error": {
+    "error_code": "DOWNSTREAM_UNAVAILABLE",
+    "message": "Follow-up action executor is temporarily unavailable.",
+    "trace_id": "trace_demo_action_failed",
+    "retryable": true,
+    "details": {
+      "target_id": "ticket_demo"
+    }
+  }
+}

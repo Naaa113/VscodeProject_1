@@ -1,0 +1,20 @@
+{
+  "phase": "007",
+  "name": "rag-minimal-citation-eval",
+  "description": "Minimal RAG eval cases for deterministic local retrieval and citation accuracy.",
+  "metrics": ["hit_rate", "citation_accuracy"],
+  "cases": [
+    {
+      "case_id": "billing_escalation_policy_hit",
+      "query": "billing complaint escalation supervisor review",
+      "expected_document_id": "doc_billing_complaint_sop",
+      "expected_terms": ["billing", "supervisor", "complaint"]
+    },
+    {
+      "case_id": "refund_policy_hit",
+      "query": "refund policy exception documentation",
+      "expected_document_id": "doc_refund_policy_faq",
+      "expected_terms": ["refund", "policy"]
+    }
+  ]
+}

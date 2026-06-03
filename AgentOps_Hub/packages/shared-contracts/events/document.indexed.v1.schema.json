@@ -20,9 +20,11 @@
     "payload": {
       "type": "object",
       "additionalProperties": false,
-      "required": ["document_id", "chunk_count", "index_ref", "parse_status"],
+      "required": ["document_id", "knowledge_base_id", "tenant_id", "chunk_count", "index_ref", "parse_status"],
       "properties": {
         "document_id": {"type": "string"},
+        "knowledge_base_id": {"type": "string"},
+        "tenant_id": {"type": "string"},
         "chunk_count": {"type": "integer", "minimum": 0},
         "index_ref": {"type": "string", "description": "Storage-neutral index reference."},
         "parse_status": {"type": "string", "const": "indexed"}

@@ -9,6 +9,7 @@ servers:
 tags:
   - name: auth
   - name: tickets
+  - name: approvals
   - name: ai-tasks
   - name: knowledge
   - name: stream
@@ -31,6 +32,8 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/LoginResponse'
+        '400':
+          $ref: '#/components/responses/ErrorResponse'
         '401':
           $ref: '#/components/responses/ErrorResponse'
   /api/auth/me:
@@ -38,6 +41,8 @@ paths:
       tags: [auth]
       operationId: getCurrentUser
       summary: Return the current user and tenant context.
+      security:
+        - bearerAuth: []
       parameters:
         - $ref: '#/components/parameters/TenantIdHeader'
         - $ref: '#/components/parameters/TraceIdHeader'
@@ -48,18 +53,32 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/CurrentUserResponse'
+        '400':
+          $ref: '#/components/responses/ErrorResponse'
         '401':
+          $ref: '#/components/responses/ErrorResponse'
+        '403':
           $ref: '#/components/responses/ErrorResponse'
   /api/tickets:
     get:
       tags: [tickets]
       operationId: listTickets
       summary: List tickets with paging.
+      security:
+        - bearerAuth: []
       parameters:
         - $ref: '#/components/parameters/TenantIdHeader'
         - $ref: '#/components/parameters/TraceIdHeader'
         - $ref: '#/components/parameters/Page'
         - $ref: '#/components/parameters/PageSize'
+        - $ref: '#/components/parameters/TicketStatus'
+        - $ref: '#/components/parameters/TicketPriority'
+        - $ref: '#/components/parameters/TicketCategory'
+        - $ref: '#/components/parameters/CustomerId'
+        - $ref: '#/components/parameters/CreatedFrom'
+        - $ref: '#/components/parameters/CreatedTo'
+        - $ref: '#/components/parameters/SlaDueBefore'
+        - $ref: '#/components/parameters/TicketQuery'
       responses:
         '200':
           description: Ticket list.
@@ -69,10 +88,16 @@ paths:
                 $ref: '#/components/schemas/TicketListResponse'
         '400':
           $ref: '#/components/responses/ErrorResponse'
+        '401':
+          $ref: '#/components/responses/ErrorResponse'
+        '403':
+          $ref: '#/components/responses/ErrorResponse'
     post:
       tags: [tickets]
       operationId: createTicket
       summary: Create a ticket draft in the ticket domain.
+      security:
+        - bearerAuth: []
       parameters:
         - $ref: '#/components/parameters/TenantIdHeader'
         - $ref: '#/components/parameters/TraceIdHeader'
@@ -91,11 +116,17 @@ paths:
                 $ref: '#/components/schemas/TicketDetail'
         '400':
           $ref: '#/components/responses/ErrorResponse'
+        '401':
+          $ref: '#/components/responses/ErrorResponse'
+        '403':
+          $ref: '#/components/responses/ErrorResponse'
   /api/tickets/{id}:
     get:
       tags: [tickets]
       operationId: getTicket
       summary: Return one ticket.
+      security:
+        - bearerAuth: []
       parameters:
         - $ref: '#/components/parameters/TenantIdHeader'
         - $ref: '#/components/parameters/TraceIdHeader'
@@ -111,6 +142,217 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/TicketDetail'
+        '400':
+          $ref: '#/components/responses/ErrorResponse'
+        '401':
+          $ref: '#/components/responses/ErrorResponse'
+        '403':
+          $ref: '#/components/responses/ErrorResponse'
+        '404':
+          $ref: '#/components/responses/ErrorResponse'
+  /api/approvals:
+    post:
+      tags: [approvals]
+      operationId: createApproval
+      summary: Create an approval instance for a high-risk business action request.
+      security:
+        - bearerAuth: []
+      parameters:
+        - $ref: '#/components/parameters/TenantIdHeader'
+        - $ref: '#/components/parameters/TraceIdHeader'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CreateApprovalRequest'
+      responses:
+        '201':
+          description: Approval instance created.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApprovalInstance'
+        '400':
+          $ref: '#/components/responses/ErrorResponse'
+        '401':
+          $ref: '#/components/responses/ErrorResponse'
+        '403':
+          $ref: '#/components/responses/ErrorResponse'
+        '409':
+          $ref: '#/components/responses/ErrorResponse'
+  /api/approvals/{id}:
+    get:
+      tags: [approvals]
+      operationId: getApproval
+      summary: Return approval instance detail for the current tenant.
+      security:
+        - bearerAuth: []
+      parameters:
+        - $ref: '#/components/parameters/TenantIdHeader'
+        - $ref: '#/components/parameters/TraceIdHeader'
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Approval instance detail.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApprovalInstance'
+        '400':
+          $ref: '#/components/responses/ErrorResponse'
+        '401':
+          $ref: '#/components/responses/ErrorResponse'
+        '403':
+          $ref: '#/components/responses/ErrorResponse'
+        '404':
+          $ref: '#/components/responses/ErrorResponse'
+  /api/approvals/{id}/approve:
+    post:
+      tags: [approvals]
+      operationId: approveApproval
+      summary: Approve a pending approval instance and create one action command.
+      security:
+        - bearerAuth: []
+      parameters:
+        - $ref: '#/components/parameters/TenantIdHeader'
+        - $ref: '#/components/parameters/TraceIdHeader'
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ApprovalDecisionRequest'
+      responses:
+        '200':
+          description: Approval instance approved.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApprovalInstance'
+        '400':
+          $ref: '#/components/responses/ErrorResponse'
+        '401':
+          $ref: '#/components/responses/ErrorResponse'
+        '403':
+          $ref: '#/components/responses/ErrorResponse'
+        '404':
+          $ref: '#/components/responses/ErrorResponse'
+        '409':
+          $ref: '#/components/responses/ErrorResponse'
+  /api/approvals/{id}/reject:
+    post:
+      tags: [approvals]
+      operationId: rejectApproval
+      summary: Reject a pending approval instance without creating an action command.
+      security:
+        - bearerAuth: []
+      parameters:
+        - $ref: '#/components/parameters/TenantIdHeader'
+        - $ref: '#/components/parameters/TraceIdHeader'
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ApprovalDecisionRequest'
+      responses:
+        '200':
+          description: Approval instance rejected.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApprovalInstance'
+        '400':
+          $ref: '#/components/responses/ErrorResponse'
+        '401':
+          $ref: '#/components/responses/ErrorResponse'
+        '403':
+          $ref: '#/components/responses/ErrorResponse'
+        '404':
+          $ref: '#/components/responses/ErrorResponse'
+        '409':
+          $ref: '#/components/responses/ErrorResponse'
+  /api/approvals/{id}/cancel:
+    post:
+      tags: [approvals]
+      operationId: cancelApproval
+      summary: Cancel a pending approval instance.
+      security:
+        - bearerAuth: []
+      parameters:
+        - $ref: '#/components/parameters/TenantIdHeader'
+        - $ref: '#/components/parameters/TraceIdHeader'
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ApprovalDecisionRequest'
+      responses:
+        '200':
+          description: Approval instance cancelled.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApprovalInstance'
+        '400':
+          $ref: '#/components/responses/ErrorResponse'
+        '401':
+          $ref: '#/components/responses/ErrorResponse'
+        '403':
+          $ref: '#/components/responses/ErrorResponse'
+        '404':
+          $ref: '#/components/responses/ErrorResponse'
+        '409':
+          $ref: '#/components/responses/ErrorResponse'
+  /api/action-commands/{id}:
+    get:
+      tags: [approvals]
+      operationId: getActionCommand
+      summary: Return an action command and its execution result for the current tenant.
+      security:
+        - bearerAuth: []
+      parameters:
+        - $ref: '#/components/parameters/TenantIdHeader'
+        - $ref: '#/components/parameters/TraceIdHeader'
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Action command detail.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ActionCommand'
+        '400':
+          $ref: '#/components/responses/ErrorResponse'
+        '401':
+          $ref: '#/components/responses/ErrorResponse'
+        '403':
+          $ref: '#/components/responses/ErrorResponse'
         '404':
           $ref: '#/components/responses/ErrorResponse'
   /api/ai/tasks:
@@ -307,6 +549,11 @@ paths:
         '404':
           $ref: '#/components/responses/ErrorResponse'
 components:
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
   parameters:
     TenantIdHeader:
       name: X-Tenant-Id
@@ -337,6 +584,57 @@ components:
         minimum: 1
         maximum: 100
         default: 20
+    TicketStatus:
+      name: status
+      in: query
+      required: false
+      schema:
+        $ref: '#/components/schemas/TicketStatus'
+    TicketPriority:
+      name: priority
+      in: query
+      required: false
+      schema:
+        $ref: '#/components/schemas/TicketPriority'
+    TicketCategory:
+      name: category
+      in: query
+      required: false
+      schema:
+        type: string
+    CustomerId:
+      name: customer_id
+      in: query
+      required: false
+      schema:
+        type: string
+    CreatedFrom:
+      name: created_from
+      in: query
+      required: false
+      schema:
+        type: string
+        format: date-time
+    CreatedTo:
+      name: created_to
+      in: query
+      required: false
+      schema:
+        type: string
+        format: date-time
+    SlaDueBefore:
+      name: sla_due_before
+      in: query
+      required: false
+      schema:
+        type: string
+        format: date-time
+    TicketQuery:
+      name: query
+      in: query
+      required: false
+      schema:
+        type: string
   responses:
     ErrorResponse:
       description: Unified error response.
@@ -428,9 +726,35 @@ components:
           type: array
           items:
             type: string
+    TicketStatus:
+      type: string
+      enum: [open, in_progress, waiting_customer, resolved, closed]
+    TicketPriority:
+      type: string
+      enum: [low, normal, high, urgent]
+    CustomerSummary:
+      type: object
+      required: [customer_id, display_name]
+      properties:
+        customer_id:
+          type: string
+        display_name:
+          type: string
+        external_ref:
+          type: string
+          nullable: true
+    CreateCustomerInput:
+      type: object
+      required: [display_name]
+      properties:
+        display_name:
+          type: string
+        external_ref:
+          type: string
+          nullable: true
     TicketSummary:
       type: object
-      required: [ticket_id, tenant_id, title, status, priority, audit]
+      required: [ticket_id, tenant_id, title, status, priority, category, customer, audit]
       properties:
         ticket_id:
           type: string
@@ -439,10 +763,17 @@ components:
         title:
           type: string
         status:
-          type: string
+          $ref: '#/components/schemas/TicketStatus'
         priority:
+          $ref: '#/components/schemas/TicketPriority'
+        category:
           type: string
-          enum: [low, normal, high, urgent]
+        customer:
+          $ref: '#/components/schemas/CustomerSummary'
+        sla_due_at:
+          type: string
+          format: date-time
+          nullable: true
         audit:
           $ref: '#/components/schemas/AuditFields'
     TicketDetail:
@@ -453,21 +784,29 @@ components:
           properties:
             description:
               type: string
-            sla_due_at:
-              type: string
-              format: date-time
-              nullable: true
     CreateTicketRequest:
       type: object
-      required: [title, description, priority]
+      required: [title, description, priority, category]
+      oneOf:
+        - required: [customer_id]
+        - required: [customer]
       properties:
         title:
           type: string
         description:
           type: string
         priority:
+          $ref: '#/components/schemas/TicketPriority'
+        category:
           type: string
-          enum: [low, normal, high, urgent]
+        customer_id:
+          type: string
+        customer:
+          $ref: '#/components/schemas/CreateCustomerInput'
+        sla_due_at:
+          type: string
+          format: date-time
+          nullable: true
     TicketListResponse:
       type: object
       required: [items, page]
@@ -478,6 +817,200 @@ components:
             $ref: '#/components/schemas/TicketSummary'
         page:
           $ref: '#/components/schemas/PageMeta'
+    ApprovalStatus:
+      type: string
+      enum: [pending, approved, rejected, cancelled, expired]
+    ActionCommandStatus:
+      type: string
+      enum: [pending, success, failed, cancelled]
+    ApprovalCitationSummary:
+      type: object
+      required: [document_id, chunk_id, source_title]
+      properties:
+        document_id:
+          type: string
+        chunk_id:
+          type: string
+        source_title:
+          type: string
+        source_uri:
+          type: string
+          nullable: true
+    TicketFollowupActionInput:
+      type: object
+      required: [ticket_id, title, reason, approval_policy]
+      properties:
+        ticket_id:
+          type: string
+        title:
+          type: string
+        reason:
+          type: string
+        due_at:
+          type: string
+          format: date-time
+          nullable: true
+        approval_policy:
+          type: string
+          enum: [required, policy_check_required]
+    TicketFollowupActionOutput:
+      type: object
+      required: [followup_task_ref, ticket_id, created_at, created_by]
+      properties:
+        followup_task_ref:
+          type: string
+        ticket_id:
+          type: string
+        created_at:
+          type: string
+          format: date-time
+        created_by:
+          type: string
+    CreateApprovalRequest:
+      type: object
+      required:
+        [source_type, source_task_id, target_type, target_id, action_type, requested_by, risk_reason, idempotency_key, action_input]
+      properties:
+        source_type:
+          type: string
+        source_task_id:
+          type: string
+        target_type:
+          type: string
+        target_id:
+          type: string
+        action_type:
+          type: string
+          enum: [ticket_create_followup]
+        requested_by:
+          type: string
+        risk_reason:
+          type: string
+        idempotency_key:
+          type: string
+        citations:
+          type: array
+          items:
+            $ref: '#/components/schemas/ApprovalCitationSummary'
+        action_input:
+          $ref: '#/components/schemas/TicketFollowupActionInput'
+    ApprovalDecisionRequest:
+      type: object
+      required: [reason]
+      properties:
+        reason:
+          type: string
+    ApprovalRecord:
+      type: object
+      required:
+        [approval_record_id, approval_instance_id, tenant_id, decision, decided_by, reason, action_summary, trace_id, created_at]
+      properties:
+        approval_record_id:
+          type: string
+        approval_instance_id:
+          type: string
+        tenant_id:
+          type: string
+        decision:
+          type: string
+          enum: [approved, rejected, cancelled, expired]
+        decided_by:
+          type: string
+        reason:
+          type: string
+        action_summary:
+          type: string
+        trace_id:
+          type: string
+        created_at:
+          type: string
+          format: date-time
+    ActionCommand:
+      type: object
+      required:
+        [action_command_id, approval_instance_id, tenant_id, action_type, target_type, target_id, idempotency_key, status, created_by, created_at]
+      properties:
+        action_command_id:
+          type: string
+        approval_instance_id:
+          type: string
+        tenant_id:
+          type: string
+        action_type:
+          type: string
+          enum: [ticket_create_followup]
+        target_type:
+          type: string
+        target_id:
+          type: string
+        idempotency_key:
+          type: string
+        status:
+          $ref: '#/components/schemas/ActionCommandStatus'
+        created_by:
+          type: string
+        created_at:
+          type: string
+          format: date-time
+        executed_at:
+          type: string
+          format: date-time
+          nullable: true
+        result_payload:
+          allOf:
+            - $ref: '#/components/schemas/TicketFollowupActionOutput'
+          nullable: true
+        error:
+          $ref: '#/components/schemas/ErrorResponse'
+    ApprovalInstance:
+      type: object
+      required:
+        [approval_instance_id, tenant_id, status, requested_by, source_type, source_id, target_type, target_id, action_type, risk_reason, idempotency_key, created_at, updated_at]
+      properties:
+        approval_instance_id:
+          type: string
+        tenant_id:
+          type: string
+        status:
+          $ref: '#/components/schemas/ApprovalStatus'
+        requested_by:
+          type: string
+        source_type:
+          type: string
+        source_id:
+          type: string
+        target_type:
+          type: string
+        target_id:
+          type: string
+        action_type:
+          type: string
+          enum: [ticket_create_followup]
+        risk_reason:
+          type: string
+        idempotency_key:
+          type: string
+        created_at:
+          type: string
+          format: date-time
+        updated_at:
+          type: string
+          format: date-time
+        expires_at:
+          type: string
+          format: date-time
+          nullable: true
+        action_command_id:
+          type: string
+          nullable: true
+        action_input:
+          $ref: '#/components/schemas/TicketFollowupActionInput'
+        citations:
+          type: array
+          items:
+            $ref: '#/components/schemas/ApprovalCitationSummary'
+        latest_record:
+          $ref: '#/components/schemas/ApprovalRecord'
     AiTaskStatus:
       type: string
       enum: [pending, running, waiting_approval, success, failed, cancelled]
@@ -612,7 +1145,7 @@ components:
             $ref: '#/components/schemas/Citation'
     DocumentSummary:
       type: object
-      required: [document_id, knowledge_base_id, tenant_id, filename, parse_status]
+      required: [document_id, knowledge_base_id, tenant_id, filename, parse_status, chunk_count, index_ref]
       properties:
         document_id:
           type: string
@@ -684,8 +1217,14 @@ components:
                 type: string
               score:
                 type: number
+              mock_source:
+                type: boolean
+                description: True only for explicit mock knowledge results.
               citation:
                 $ref: '#/components/schemas/Citation'
+        mock_source:
+          type: boolean
+          description: True only when the whole response is an explicit mock result.
     Citation:
       type: object
       required: [document_id, chunk_id, source_title]

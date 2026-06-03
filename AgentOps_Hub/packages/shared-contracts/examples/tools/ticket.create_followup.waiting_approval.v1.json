@@ -5,8 +5,7 @@
   "trace_id": "trace_demo",
   "status": "waiting_approval",
   "output": {
-    "approval_instance_id": "approval_demo",
-    "action_command_status": "pending"
+    "approval_instance_id": "approval_demo"
   },
   "error": null
 }

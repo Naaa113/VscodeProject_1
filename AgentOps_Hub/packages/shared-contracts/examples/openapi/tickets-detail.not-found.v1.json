@@ -1,0 +1,6 @@
+{
+  "error_code": "RESOURCE_NOT_FOUND",
+  "message": "Resource not found.",
+  "trace_id": "trace_demo",
+  "retryable": false
+}

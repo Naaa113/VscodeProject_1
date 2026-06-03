@@ -28,5 +28,26 @@
     "openapi": "examples/openapi",
     "events": "examples/events",
     "tools": "examples/tools"
-  }
+  },
+  "openapi_examples": [
+    "examples/openapi/auth-login.success.v1.json",
+    "examples/openapi/auth-login.failure.v1.json",
+    "examples/openapi/auth-me.success.v1.json",
+    "examples/openapi/auth-me.token-expired.v1.json",
+    "examples/openapi/auth-me.forbidden.v1.json",
+    "examples/openapi/approvals-create.success.v1.json",
+    "examples/openapi/approvals-detail.pending.v1.json",
+    "examples/openapi/approvals-approve.success.v1.json",
+    "examples/openapi/approvals-reject.success.v1.json",
+    "examples/openapi/approvals-cancel.success.v1.json",
+    "examples/openapi/action-commands.success.v1.json",
+    "examples/openapi/action-commands.failed.v1.json",
+    "examples/openapi/tickets-list.success.v1.json",
+    "examples/openapi/tickets-create.success.v1.json",
+    "examples/openapi/tickets-detail.success.v1.json",
+    "examples/openapi/tickets-detail.not-found.v1.json",
+    "examples/openapi/knowledge-documents-list.success.v1.json",
+    "examples/openapi/knowledge-document-register.success.v1.json",
+    "examples/openapi/knowledge-search.success.v1.json"
+  ]
 }

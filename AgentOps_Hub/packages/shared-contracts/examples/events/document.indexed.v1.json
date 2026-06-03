@@ -9,6 +9,8 @@
   "consumers": ["document-entrypoint", "web-console-stream"],
   "payload": {
     "document_id": "doc_demo",
+    "knowledge_base_id": "kb_demo",
+    "tenant_id": "tenant_demo",
     "chunk_count": 12,
     "index_ref": "index_demo_storage_neutral",
     "parse_status": "indexed"

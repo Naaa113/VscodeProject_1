@@ -32,10 +32,16 @@
           "additionalProperties": false,
           "properties": {
             "query": {"type": ["string", "null"]},
-            "status": {"type": ["string", "null"]},
+            "status": {
+              "type": ["string", "null"],
+              "enum": ["open", "in_progress", "waiting_customer", "resolved", "closed", null]
+            },
             "priority": {"type": ["string", "null"], "enum": ["low", "normal", "high", "urgent", null]},
+            "category": {"type": ["string", "null"]},
+            "customer_id": {"type": ["string", "null"]},
             "created_from": {"type": ["string", "null"], "format": "date-time"},
             "created_to": {"type": ["string", "null"], "format": "date-time"},
+            "sla_due_before": {"type": ["string", "null"], "format": "date-time"},
             "page": {"type": "integer", "minimum": 1, "default": 1},
             "page_size": {"type": "integer", "minimum": 1, "maximum": 100, "default": 20}
           }
@@ -59,12 +65,19 @@
               "type": "array",
               "items": {
                 "type": "object",
-                "required": ["ticket_id", "title", "status", "priority"],
+                "required": ["ticket_id", "tenant_id", "title", "status", "priority", "customer_id", "category"],
                 "properties": {
                   "ticket_id": {"type": "string"},
+                  "tenant_id": {"type": "string"},
                   "title": {"type": "string"},
-                  "status": {"type": "string"},
-                  "priority": {"type": "string"}
+                  "status": {
+                    "type": "string",
+                    "enum": ["open", "in_progress", "waiting_customer", "resolved", "closed"]
+                  },
+                  "priority": {"type": "string", "enum": ["low", "normal", "high", "urgent"]},
+                  "customer_id": {"type": "string"},
+                  "category": {"type": "string"},
+                  "sla_due_at": {"type": ["string", "null"], "format": "date-time"}
                 }
               }
             },
@@ -73,8 +86,43 @@
             "total": {"type": "integer"}
           }
         },
-        "error": {"type": ["object", "null"]}
-      }
+        "error": {
+          "oneOf": [
+            {"type": "null"},
+            {
+              "type": "object",
+              "additionalProperties": false,
+              "required": ["error_code", "message", "trace_id", "retryable"],
+              "properties": {
+                "error_code": {"type": "string"},
+                "message": {"type": "string"},
+                "trace_id": {"type": "string"},
+                "retryable": {"type": "boolean"},
+                "details": {"type": "object", "additionalProperties": true}
+              }
+            }
+          ]
+        }
+      },
+      "allOf": [
+        {
+          "if": {
+            "properties": {
+              "status": {"const": "failed"}
+            },
+            "required": ["status"]
+          },
+          "then": {
+            "required": ["error"],
+            "properties": {
+              "error": {
+                "type": "object",
+                "required": ["error_code", "message", "trace_id", "retryable"]
+              }
+            }
+          }
+        }
+      ]
     }
   }
 }

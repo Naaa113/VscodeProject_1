@@ -1,0 +1,36 @@
+{
+  "approval_instance_id": "approval_demo_003",
+  "tenant_id": "tenant_demo",
+  "status": "cancelled",
+  "requested_by": "user_demo",
+  "source_type": "ai_task",
+  "source_id": "task_complaint_demo",
+  "target_type": "ticket",
+  "target_id": "ticket_demo",
+  "action_type": "ticket_create_followup",
+  "risk_reason": "Urgent complaint requires supervisor confirmation before creating a follow-up task.",
+  "idempotency_key": "followup:ticket_demo:task_cancel_demo",
+  "created_at": "2026-06-03T08:10:00Z",
+  "updated_at": "2026-06-03T08:12:00Z",
+  "expires_at": "2026-06-04T08:10:00Z",
+  "action_command_id": null,
+  "action_input": {
+    "ticket_id": "ticket_demo",
+    "title": "Supervisor follow-up for urgent complaint",
+    "reason": "High-risk complaint handling needs human-confirmed follow-up ownership.",
+    "due_at": "2026-06-03T12:00:00Z",
+    "approval_policy": "required"
+  },
+  "citations": [],
+  "latest_record": {
+    "approval_record_id": "approval_record_003",
+    "approval_instance_id": "approval_demo_003",
+    "tenant_id": "tenant_demo",
+    "decision": "cancelled",
+    "decided_by": "user_demo",
+    "reason": "Requester cancelled the pending approval.",
+    "action_summary": "No action command created.",
+    "trace_id": "trace_demo_cancel",
+    "created_at": "2026-06-03T08:12:00Z"
+  }
+}
